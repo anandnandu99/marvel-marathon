@@ -57,17 +57,37 @@ function save() { localStorage.setItem("marvel-marathon-progress", JSON.stringif
 function showToast(message) { toast.textContent = message; toast.classList.add("show"); clearTimeout(showToast.timer); showToast.timer = setTimeout(() => toast.classList.remove("show"), 1800); }
 function updateProgress() { const percent = titles.length ? Math.round(completed.size / titles.length * 100) : 0; progressPercent.textContent = `${percent}%`; watchedCount.textContent = completed.size; totalCount.textContent = titles.length; progressRing.style.setProperty("--progress", `${percent * 3.6}deg`); miniProgress.style.width = `${percent}%`; }
 
+function showPosterFallback(image) {
+  const card = image.closest(".title-card");
+  if (!card) return;
+  const item = titles[Number(card.dataset.index)];
+  const fallback = document.createElement("div");
+  fallback.className = "poster poster-fallback";
+  fallback.style.setProperty("--accent", item.accent);
+  fallback.setAttribute("role", "img");
+  fallback.setAttribute("aria-label", `${item.title} poster artwork unavailable`);
+  fallback.innerHTML = `<span class="fallback-mark">${item.code}</span><span class="fallback-title"></span>`;
+  fallback.querySelector(".fallback-title").textContent = item.title;
+  image.replaceWith(fallback);
+}
+
 function render() {
   const visible = activeFilter === "all" ? titles : titles.filter(item => item.type === activeFilter);
   timeline.innerHTML = visible.map((item, visibleIndex) => {
     const index = titles.indexOf(item);
     return `<article class="title-card ${completed.has(index) ? "done" : ""}" data-index="${index}" style="--accent:${item.accent}">
       <button class="check-button" type="button" aria-label="Mark ${item.title} as watched" aria-pressed="${completed.has(index)}"></button>
-      <div class="poster-frame">${item.poster ? `<img src="${posterBase}${item.poster}" alt="${item.title} poster" loading="lazy" />` : `<div class="poster">${item.code}</div>`}</div>
+      <div class="poster-frame">${item.poster ? `<img src="${posterBase}${item.poster}" alt="${item.title} poster" loading="lazy" />` : `<div class="poster poster-fallback" role="img" aria-label="${item.title} poster artwork unavailable"><span class="fallback-mark">${item.code}</span><span class="fallback-title">${item.title}</span></div>`}</div>
       <div class="title-info"><span class="meta">${String(visibleIndex + 1).padStart(2, "0")} · ${item.type}</span><h3>${item.title}</h3><p>${item.type === "Film" ? "Feature film" : item.type === "Series" ? "Streaming series" : "Marvel special presentation"}</p></div>
       <span class="year">${item.year}</span>
     </article>`;
   }).join("");
+
+  timeline.querySelectorAll(".poster-frame img").forEach(image => {
+    image.addEventListener("error", () => showPosterFallback(image), { once: true });
+    if (image.complete && image.naturalWidth === 0) showPosterFallback(image);
+  });
+
   document.querySelectorAll(".check-button").forEach(button => button.addEventListener("click", () => {
     const card = button.closest(".title-card"); const index = Number(card.dataset.index);
     if (completed.has(index)) { completed.delete(index); card.classList.remove("done"); button.setAttribute("aria-pressed", "false"); showToast("Removed from watched list"); }
