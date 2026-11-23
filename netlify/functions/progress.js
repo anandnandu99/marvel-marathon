@@ -8,6 +8,16 @@ const json = (body, status = 200) => new Response(JSON.stringify(body), {
 export default async (request) => {
   const url = new URL(request.url);
   const visitorId = url.searchParams.get("id");
+  const configuredPassword = process.env.MARVEL_MARATHON_PASSWORD;
+  const suppliedPassword = request.headers.get("x-marathon-password");
+
+  if (!configuredPassword) {
+    return json({ error: "Progress password is not configured." }, 500);
+  }
+
+  if (suppliedPassword !== configuredPassword) {
+    return json({ error: "A valid password is required." }, 401);
+  }
 
   // The random browser ID acts as an unguessable key for this personal tracker.
   if (!visitorId || !/^[a-f0-9-]{36}$/i.test(visitorId)) {
