@@ -9,16 +9,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="enhancements.css" />
   </head>
   <body>
     <header class="topbar">
-      <a class="brand" href="#" aria-label="Marvel Marathon home">
-        <span class="brand-mark">M</span>
-        <span>MARVEL MARATHON</span>
-      </a>
+      <a class="brand" href="#" aria-label="Marvel Marathon home"><span class="brand-mark">M</span><span>MARVEL MARATHON</span></a>
       <button class="reset-button" id="resetButton" type="button">Reset progress</button>
     </header>
-
     <main>
       <section class="hero">
         <div class="hero-copy">
@@ -26,44 +23,20 @@
           <h1>Assemble<br />your <span>marathon.</span></h1>
           <p class="intro">From one man’s suit of armor to the Infinity Saga and beyond. Track every adventure in chronological story order.</p>
         </div>
-
         <aside class="progress-card" aria-label="Marathon progress">
-          <div class="progress-ring" id="progressRing">
-            <div>
-              <strong id="progressPercent">0%</strong>
-              <span>complete</span>
-            </div>
-          </div>
-          <div class="progress-details">
-            <p><strong id="watchedCount">0</strong> of <strong id="totalCount">0</strong></p>
-            <span>titles watched</span>
-            <div class="mini-progress"><span id="miniProgress"></span></div>
-          </div>
+          <div class="progress-ring" id="progressRing"><div><strong id="progressPercent">0%</strong><span>complete</span></div></div>
+          <div class="progress-details"><p><strong id="watchedCount">0</strong> of <strong id="totalCount">0</strong></p><span>titles watched</span><div class="mini-progress"><span id="miniProgress"></span></div></div>
         </aside>
       </section>
-
       <section class="marathon" aria-labelledby="timeline-heading">
         <div class="toolbar">
-          <div>
-            <p class="eyebrow">CHRONOLOGICAL ORDER</p>
-            <h2 id="timeline-heading">Your Timeline</h2>
-          </div>
-          <div class="filters" aria-label="Filter titles">
-            <button class="filter active" data-filter="all" type="button">All</button>
-            <button class="filter" data-filter="Film" type="button">Films</button>
-            <button class="filter" data-filter="Series" type="button">Series</button>
-          </div>
+          <div><p class="eyebrow">CHRONOLOGICAL ORDER</p><h2 id="timeline-heading">Your Timeline</h2></div>
+          <div class="filters" aria-label="Filter titles"><button class="filter active" data-filter="all" type="button">All</button><button class="filter" data-filter="Film" type="button">Films</button><button class="filter" data-filter="Series" type="button">Series</button></div>
         </div>
-
         <div class="timeline" id="timeline"></div>
       </section>
     </main>
-
-    <footer>
-      <span>MARVEL MARATHON</span>
-      <p>Unofficial fan tracker · Watch at your own heroic pace.</p>
-    </footer>
-
+    <footer><span>MARVEL MARATHON</span><p>Unofficial fan tracker · Watch at your own heroic pace.</p></footer>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
     <script src="script.js"></script>
     <script src="progress-sync.js"></script>

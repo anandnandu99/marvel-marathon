@@ -1,0 +1,55 @@
+/* Added poster and motion styling */
+.poster-frame {
+  width: 82px;
+  height: 82px;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.13);
+  background: linear-gradient(145deg, var(--accent), #1a202b);
+  box-shadow: 0 8px 18px rgba(0,0,0,.22);
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s;
+}
+.poster-frame img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 18%;
+  transition: transform .55s cubic-bezier(.2,.8,.2,1), filter .35s;
+}
+.title-card:hover .poster-frame { transform: translateY(-3px) scale(1.04); box-shadow: 0 13px 28px rgba(0,0,0,.38); }
+.title-card:hover .poster-frame img { transform: scale(1.08); }
+.title-card.done .poster-frame img { filter: saturate(.45) brightness(.65); }
+.title-card.done::after { content: "WATCHED"; position: absolute; right: 104px; padding: 5px 8px; border: 1px solid rgba(217,31,38,.6); border-radius: 4px; color: #ff5a60; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; }
+
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid rgba(217,31,38,.16);
+  transform: rotate(45deg);
+  animation: drift 12s ease-in-out infinite alternate;
+}
+.hero { position: relative; overflow: hidden; }
+.hero::before { width: 180px; height: 180px; right: 32%; top: -130px; }
+.hero::after { width: 90px; height: 90px; right: 8%; bottom: -65px; animation-delay: -4s; }
+@keyframes drift { to { transform: rotate(75deg) translate(14px, 10px); } }
+
+.title-card { animation: reveal .45s both; }
+.title-card:nth-child(3n) { animation-delay: .08s; }
+.title-card:nth-child(3n + 1) { animation-delay: .04s; }
+@keyframes reveal { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.progress-ring { box-shadow: 0 0 32px rgba(217,31,38,.08); }
+.check-button:hover { border-color: var(--red); transform: scale(1.08); }
+.check-button:active { transform: scale(.92); }
+
+@media (max-width: 760px) {
+  .poster-frame { width: 66px; height: 66px; }
+  .title-card.done::after { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+}
